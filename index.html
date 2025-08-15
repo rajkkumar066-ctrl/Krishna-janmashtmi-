@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Krishna Janmashtami Celebration</title>
+<style>
+    html, body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        overflow: hidden;
+        font-family: 'Segoe UI', sans-serif;
+    }
+    body {
+        background: #000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+    }
+
+    /* Landing Screen */
+    #landing {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: linear-gradient(270deg, magenta, cyan, gold, magenta);
+        background-size: 800% 800%;
+        animation: gradientShift 10s ease infinite, zoomPulse 5s ease-in-out infinite;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        z-index: 10;
+    }
+    @keyframes gradientShift {
+        0% {background-position: 0% 50%;}
+        50% {background-position: 100% 50%;}
+        100% {background-position: 0% 50%;}
+    }
+    @keyframes zoomPulse {
+        0%,100% {transform: scale(1);}
+        50% {transform: scale(1.05);}
+    }
+    .reveal-btn {
+        margin-top: 20px;
+        padding: 12px 25px;
+        font-size: 18px;
+        background: none;
+        border: 2px solid #0f0;
+        color: #0f0;
+        border-radius: 30px;
+        box-shadow: 0 0 10px #0f0, 0 0 20px #0f0 inset;
+        cursor: pointer;
+        animation: pulseGlow 1.5s infinite;
+    }
+    @keyframes pulseGlow {
+        0%,100% {box-shadow: 0 0 10px #0f0, 0 0 20px #0f0 inset;}
+        50% {box-shadow: 0 0 20px #0f0, 0 0 30px #0f0 inset;}
+    }
+
+    /* Celebration Page */
+    #celebration {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: radial-gradient(circle at center, rgba(58,0,77,0.8), rgba(0,0,40,0.9));
+        overflow: hidden;
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        padding-top: 20px;
+        text-align: center;
+    }
+    #celebration::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(270deg, magenta, cyan, gold, magenta);
+        background-size: 800% 800%;
+        animation: gradientShift 12s ease infinite;
+        filter: blur(60px);
+        z-index: 0;
+    }
+    h1 {
+        position: relative;
+        font-size: 2em;
+        font-weight: bold;
+        animation: disco 3s infinite linear;
+        z-index: 1;
+    }
+    @keyframes disco {
+        0% {color: magenta;}
+        33% {color: cyan;}
+        66% {color: gold;}
+        100% {color: magenta;}
+    }
+    #krishnaImg {
+        position: relative;
+        max-width: 90%;
+        height: auto;
+        border-radius: 15px;
+        box-shadow: 0 0 20px magenta;
+        animation: imgPulse 5s infinite ease-in-out;
+        z-index: 1;
+    }
+    @keyframes imgPulse {
+        0%,100% {transform: scale(1);}
+        50% {transform: scale(1.02);}
+    }
+    .greeting {
+        font-size: 1.2em;
+        margin-top: 15px;
+        z-index: 1;
+    }
+    .share-btn {
+        margin-top: 15px;
+        background: #25D366;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 25px;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    canvas {
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        z-index: 0;
+        pointer-events: none;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 600px) {
+        h1 { font-size: 1.5em; }
+        .greeting { font-size: 1em; padding: 0 10px; }
+    }
+
+
+
+
+</style>
+</head>
+<body>
+
+
+<script type='text/javascript' src='//pl27410644.profitableratecpm.com/6b/5f/41/6b5f4188a2a2b99f6c738e8fcf3296fa.js'></script>
+
+
+
+
+<!-- Landing Screen -->
+<div id="landing">
+    <h2>Special Krishna Janmashtami message waiting for you</h2>
+    <button class="reveal-btn" onclick="revealCelebration()">Click to Reveal</button>
+</div>
+
+<!-- Celebration Page -->
+<div id="celebration">
+    <h1>✨ Happy Krishna Janmashtami ✨</h1>
+    <img src="krishna.gif" id="krishnaImg" alt="Krishna">
+    <div class="greeting" id="greetingText"></div>
+    <button class="share-btn" onclick="shareOnWhatsApp()">
+        <span>📲 Share on WhatsApp</span>
+    </button>
+    <canvas id="celebrationCanvas"></canvas>
+</div>
+
+<audio id="bgMusic" src="music.mp3" loop></audio>
+
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const nameParam = urlParams.get("name") || "Hamare ";
+    const msgParam = urlParams.get("msg") || "aapko krishna janmashtmi ki bahut bahut badhai";
+
+    document.getElementById("greetingText").innerHTML = `${nameParam}  taraf se: ${msgParam}`;
+
+    function revealCelebration() {
+        document.getElementById("landing").style.display = "none";
+        document.getElementById("celebration").style.display = "flex";
+        startCelebration();
+    }
+
+    function startCelebration() {
+        const audio = document.getElementById("bgMusic");
+        audio.play().catch(err => console.log("Autoplay blocked:", err));
+        startConfetti();
+    }
+
+    function shareOnWhatsApp() {
+        const url = `${window.location.origin}${window.location.pathname}?name=${encodeURIComponent(nameParam)}&msg=${encodeURIComponent(msgParam)}`;
+        const message = `${nameParam} taraf se: ${msgParam} ${url}`;
+        window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, "_blank");
+    }
+
+    // Celebration effect (Confetti)
+    function startConfetti() {
+        const canvas = document.getElementById("celebrationCanvas");
+        const ctx = canvas.getContext("2d");
+        let particles = [];
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener("resize", resize);
+        resize();
+
+        for (let i = 0; i < 100; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                r: Math.random() * 6 + 2,
+                d: Math.random() * 10 + 10,
+                color: `hsl(${Math.random() * 360},100%,50%)`,
+                tilt: Math.random() * 10 - 10
+            });
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                ctx.beginPath();
+                ctx.fillStyle = p.color;
+                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                ctx.fill();
+            });
+            update();
+        }
+
+        function update() {
+            particles.forEach(p => {
+                p.y += Math.cos(p.d) + 1 + p.r / 2;
+                p.x += Math.sin(0.5);
+                if (p.y > canvas.height) {
+                    p.y = -10;
+                    p.x = Math.random() * canvas.width;
+                }
+            });
+        }
+
+        setInterval(draw, 20);
+    }
+</script>
+
+</body>
+</html>
